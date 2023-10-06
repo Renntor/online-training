@@ -5,7 +5,6 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    subscribe = SubscribeSerializer(many=True, read_only=True)
 
     class Meta:
         model = User

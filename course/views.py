@@ -4,6 +4,7 @@ from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from course.models import Course, Lesson, Payments
+from course.pagination import MyPagination
 from course.permissions import IsStaffViewSet, IsStaff, IsUser
 from course.seriliazers import CourseSerializer, LessonSerializer, PaymentsSerializer
 from course.service import CreateMixin
@@ -16,6 +17,7 @@ class CourseViewSet(CreateMixin, viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsStaffViewSet]
+    pagination_class = MyPagination
 
     def list(self, request, *args, **kwargs):
         if request.user.group == 'user':
@@ -35,11 +37,11 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = MyPagination
 
     def get_queryset(self):
         if self.request.user.group == 'user':
             queryset = Lesson.objects.filter(owner=self.request.user)
-            print(queryset)
         elif self.request.user.group == 'staff':
             queryset = Lesson.objects.all()
         else:
@@ -71,3 +73,4 @@ class PaymentsListAPIView(generics.ListAPIView):
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ('date_of_payment',)
     permission_classes = [IsAuthenticated, IsStaff]
+    pagination_class = MyPagination

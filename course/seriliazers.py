@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from course.models import Course, Lesson, Payments
 from course.validators import URLValidator
+from subscribe.serializers import SubscribeSerializer
 from users.seriliazers import UserSerializer
+from subscribe.models import SubscribeUser
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -14,6 +16,7 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     count_lesson = serializers.SerializerMethodField()
     lesson = LessonSerializer(source='lesson_set', many=True, read_only=True)
+    subscribe = SubscribeSerializer(source='subscribeuser_set', many=True, read_only=True)
 
     def get_count_lesson(self, instance):
         return Lesson.objects.filter(course__id=instance.id).count()

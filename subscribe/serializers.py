@@ -7,4 +7,4 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubscribeUser
-        fields = ('subscribe',)
+        fields = ('subscribe', 'course', 'user',)
