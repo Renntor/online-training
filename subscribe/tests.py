@@ -28,6 +28,7 @@ class SubscribeTestCase(APITestCase):
         )
 
     def test_list_subscribe(self):
+        """ Тестирование вывода списка подписок"""
         response = self.client.get(
             reverse('subscribe:subscribe_list')
         )
@@ -39,6 +40,7 @@ class SubscribeTestCase(APITestCase):
         )
 
     def test_destroy_subscribe(self):
+        """ Тестирование удаления подписки"""
         response = self.client.delete(
             reverse('subscribe:subscribe_destroy', kwargs={'pk': 1})
         )
@@ -49,6 +51,7 @@ class SubscribeTestCase(APITestCase):
         )
 
     def test_create_subscribe(self):
+        """ Тестирование создания подписки"""
         self.client.delete(reverse('subscribe:subscribe_destroy', kwargs={'pk': 1}))
 
         response = self.client.post(

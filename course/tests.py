@@ -151,7 +151,6 @@ class CourseTestCase(APITestCase):
             response.json(),
             [{'id': 1, 'count_lesson': 0, 'lesson': [], 'subscribe': [], 'title': 'test', 'preview': None,
               'description': 'test', 'owner': 1}]
-
         )
 
     def test_update_course(self):
