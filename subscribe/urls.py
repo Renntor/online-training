@@ -7,5 +7,5 @@ app_name = SubscribeConfig.name
 urlpatterns = [
     path('', SubscribeListAPIView.as_view(), name='subscribe_list'),
     path('create/', SubscribeCreateAPIView.as_view(), name='subscribe_create'),
-    path('delete/', SubscribeDestroyAPIView.as_view(), name='subscribe_destroy'),
+    path('delete/<int:pk>', SubscribeDestroyAPIView.as_view(), name='subscribe_destroy'),
 ]
