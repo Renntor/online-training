@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from course.models import Course, Lesson, Payments
 from course.pagination import MyPagination
 from course.permissions import IsStaffViewSet, IsStaff, IsUser
 from course.seriliazers import CourseSerializer, LessonSerializer, PaymentsSerializer
-from course.service import CreateMixin
+from course.service import CreateMixin, create_payment
 from rest_framework.response import Response
 
 
@@ -27,10 +27,25 @@ class CourseViewSet(CreateMixin, viewsets.ModelViewSet):
             serializer = CourseSerializer(Course.objects.all(), many=True)
             return Response(serializer.data)
 
+    def create(self, request, *args, **kwargs):
+        data = super().create(request, *args, **kwargs)
+        title = request.data['title']
+        price = request.data['price']
+        # создание продукта на stripe
+        create_payment(title, price)
+        return data
+
 
 class LessonCreateAPIView(CreateMixin, generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsUser | IsAdminUser]
+
+    def post(self, request, *args, **kwargs):
+        data = super().post(request, *args, **kwargs)
+        title = request.data['title']
+        price = request.data['price']
+        create_payment(title, price)
+        return data
 
 
 class LessonListAPIView(generics.ListAPIView):
