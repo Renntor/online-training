@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+
+from course.validators import URLValidator
 from users.models import NULLABLE, User
 
 

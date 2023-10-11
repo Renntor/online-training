@@ -20,18 +20,28 @@ def create_payment(title: str, price: float):
         product=starter_subscription['id'],
     )
 
-    paymentlink = stripe.PaymentLink.create(
-        line_items=[{"price": starter_subscription_price['id'], "quantity": 1}]
+    checkout = stripe.checkout.Session.create(
+        success_url="https://example.com/success",
+        line_items=[
+            {
+                "price": starter_subscription_price['id'],
+                "quantity": 1,
+            },
+        ],
+        mode="payment",
     )
-    return paymentlink['url']
 
-# def payment_verification(payment_id):
-#     """
-#     Проверка платежа в сервисе stripe
-#     """
-#     stripe.api_key = os.getenv('STRIPE_API_KEY')
-#
-#     s = stripe.PaymentLink.retrieve(
-#         payment_id,
-#     )
-#     print(s)
+    return (checkout['url'], checkout['id'])
+
+
+def payment_verification(payment_id):
+    """
+    Проверка платежа в сервисе stripe
+    """
+    stripe.api_key = os.getenv('STRIPE_API_KEY')
+
+    checkout = stripe.checkout.Session.retrieve(
+        payment_id,
+    )
+
+    return checkout['payment_status']

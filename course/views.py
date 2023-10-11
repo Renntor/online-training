@@ -27,14 +27,6 @@ class CourseViewSet(CreateMixin, viewsets.ModelViewSet):
             serializer = CourseSerializer(Course.objects.all(), many=True)
             return Response(serializer.data)
 
-    # def create(self, request, *args, **kwargs):
-    #     data = super().create(request, *args, **kwargs)
-    #     title = request.data['title']
-    #     price = request.data['price']
-    #     # создание продукта на stripe
-    #     create_payment(title, price)
-    #     return data
-
 
 class LessonCreateAPIView(CreateMixin, generics.CreateAPIView):
     serializer_class = LessonSerializer
