@@ -8,7 +8,6 @@ class Course(models.Model):
     preview = models.ImageField(verbose_name='превью', **NULLABLE)
     description = models.TextField(verbose_name='описание')
     price = models.PositiveIntegerField(default=0, verbose_name='цена')
-    # payment_link = models.
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
 
