@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from course.models import Course, Lesson, Payments
@@ -31,6 +31,7 @@ class CourseViewSet(CreateMixin, viewsets.ModelViewSet):
 class LessonCreateAPIView(CreateMixin, generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsUser | IsAdminUser]
+
 
 
 class LessonListAPIView(generics.ListAPIView):
