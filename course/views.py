@@ -12,7 +12,7 @@ from course.seriliazers import CourseSerializer, LessonSerializer, PaymentsSeria
 from course.service import CreateMixin
 from rest_framework.response import Response
 
-from course.task import send_an_update_mail
+from course.tasks import send_an_update_mail
 
 
 # Create your views here.
