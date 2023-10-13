@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'django_celery_beat',
 
     'users',
     'course',
@@ -164,6 +165,18 @@ CELERY_TIMEZONE = "Europe/Moscow"
 
 # Флаг отслеживания выполнения задач
 CELERY_TASK_TRACK_STARTED = True
-
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'course.tasks.send_an_update_mail',  # Путь к задаче
+        'schedule': timedelta(hours=4),  # Расписание выполнения задачи (например, каждые 10 минут)
+    },
+}
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = True
