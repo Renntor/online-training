@@ -34,8 +34,7 @@ class CourseViewSet(CreateMixin, viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         data = super().retrieve(request, *args, **kwargs)
         course = Course.objects.filter(pk=kwargs['pk']).first()
-        strtime = '%Y-%m-%d %H:%M:%S.%f'
-        time = datetime.datetime.strptime(course.last_update, strtime)
+        time = course.last_update
         if course and ((datetime.datetime.now() - time) > datetime.timedelta(hours=4)):
             course.last_update = datetime.datetime.now()
             send_an_update_mail.delay(course)
