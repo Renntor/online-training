@@ -1,5 +1,4 @@
-import datetime
-
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
 
@@ -13,7 +12,7 @@ class Course(models.Model):
     description = models.TextField(verbose_name='описание')
     price = models.PositiveIntegerField(default=0, verbose_name='цена')
 
-    last_update = models.CharField(max_length=50, default=datetime.datetime.now(), **NULLABLE,
+    last_update = models.DateTimeField(default=timezone.now(), **NULLABLE,
                                    verbose_name='последнее обновление')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец')
 
